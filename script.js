@@ -8,11 +8,16 @@ const gameBoard = (() => {
   };
   const player1 = Player("chloe", "X", true);
   const player2 = Player("Roly", "O", false);
-  return { Board, Player, player1, player2 };
+  const reset = () => {
+    gameBoard.Board = ["", "", "", "", "", "", "", "", ""];
+    displayControler.rendergame();
+  };
+  return { Board, Player, player1, player2, reset };
 })();
 
 const displayControler = (() => {
   const tiles = document.querySelectorAll(`.tile`);
+  const resetBtn = document.querySelector(`#reset`);
   const rendergame = function () {
     tiles.forEach((a) => {
       a.textContent = gameBoard.Board[a.dataset.tile];
@@ -22,8 +27,9 @@ const displayControler = (() => {
     tiles.forEach((a) => {
       a.addEventListener("click", gameLogic.round);
     });
+    displayControler.resetBtn.addEventListener("click", gameBoard.reset);
   };
-  return { tiles, rendergame, init };
+  return { tiles, rendergame, init, resetBtn };
 })();
 
 const gameLogic = (() => {
@@ -94,9 +100,19 @@ const gameLogic = (() => {
       console.log("Circle Wins");
     } else if (gameLogic.convertX(Board) === true) {
       console.log(`Cross Wins`);
-    } else return false;
+    } else if (gameLogic.checkDraw(Board) === true) {
+      console.log(`Draw`);
+    }
+    return false;
   };
-  return { round, convertX, convertO, wining, win, checkWiner };
+  const checkDraw = (Board) => {
+    let result = true;
+    Board.forEach((a, i) => {
+      if (a === "") result = false;
+    });
+    return result;
+  };
+  return { round, convertX, convertO, wining, win, checkWiner, checkDraw };
 })();
 
 displayControler.init();
