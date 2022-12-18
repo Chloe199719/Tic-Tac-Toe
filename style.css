@@ -128,3 +128,38 @@ form div label {
   opacity: 1;
   pointer-events: all;
 }
+
+.won-box {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 1;
+  border: 1px black solid;
+  padding: 20px;
+  background: linear-gradient(
+    109.6deg,
+    rgb(255, 221, 225) 11.2%,
+    rgb(255, 255, 255) 92.2%
+  );
+  /* width: 1000px; */
+  max-width: 100%;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  transition: 300ms ease-in-out;
+
+  /* height: 200px; */
+  font-size: 4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.won-box button {
+  margin-top: 20px;
+  width: 100px;
+}
+.won-box.active {
+  transform: translate(-50%, -50%) scale(1);
+  top: 50%;
+  left: 50%;
+}

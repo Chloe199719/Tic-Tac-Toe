@@ -56,7 +56,7 @@ const gameBoard = (() => {
     gameBoard.Board = ["", "", "", "", "", "", "", "", ""];
     displayControler.rendergame();
     displayControler.woncont.textContent = "";
-    displayControler.isThereaWiner = 0;
+    gameBoard.isThereaWiner = 0;
   };
   const newgame = () => {
     gameBoard.reset();
@@ -92,6 +92,8 @@ const displayControler = (() => {
   const grayout = document.querySelector(`#grayout`);
   const closeBtn = document.querySelector(`#close`);
   const newgameForm = document.querySelector(`#register`);
+  const closeWinerbtn = document.querySelector(`#closewiner`);
+  const winbox = document.querySelector(`.won-box`);
 
   const rendergame = function () {
     tiles.forEach((a) => {
@@ -112,7 +114,6 @@ const displayControler = (() => {
     );
     displayControler.newgamebtn.addEventListener(`click`, gameBoard.newgame);
     displayControler.closeBtn.addEventListener("click", closeForm);
-    displayControler.grayout.addEventListener(`click`, closeForm);
   };
   const clearForm = () => {
     displayControler.inputp1Name.value = "";
@@ -139,15 +140,40 @@ const displayControler = (() => {
     } else if (e === gameBoard.player2.getChoice()) {
       woncont.textContent = `${gameBoard.player2.getName()} ${e} as won this round`;
     }
+    displayControler.openWinner();
   };
   const openForm = () => {
     displayControler.newgameForm.classList.add("active");
-    displayControler.grayout.classList.add(`active`);
+    displayControler.addGrayout();
+    displayControler.grayout.addEventListener(`click`, closeForm);
   };
   const closeForm = () => {
     displayControler.newgameForm.classList.remove("active");
-    displayControler.grayout.classList.remove(`active`);
+    displayControler.removeGrayout();
     displayControler.clearForm();
+  };
+  const addGrayout = () => {
+    displayControler.grayout.classList.add(`active`);
+  };
+  const removeGrayout = () => {
+    displayControler.grayout.classList.remove(`active`);
+  };
+  const openWinner = () => {
+    displayControler.winbox.classList.add(`active`);
+    displayControler.grayout.addEventListener(
+      `click`,
+      displayControler.closeWinner
+    );
+    displayControler.closeWinerbtn.addEventListener(
+      `click`,
+      displayControler.closeWinner
+    );
+    displayControler.addGrayout();
+  };
+
+  const closeWinner = () => {
+    displayControler.winbox.classList.remove(`active`);
+    displayControler.removeGrayout();
   };
   return {
     tiles,
@@ -171,6 +197,12 @@ const displayControler = (() => {
     newgameForm,
     openForm,
     closeForm,
+    addGrayout,
+    removeGrayout,
+    openWinner,
+    closeWinner,
+    closeWinerbtn,
+    winbox,
   };
 })();
 
