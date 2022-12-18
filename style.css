@@ -1,7 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  scroll-behavior: smooth;
+}
+body {
+  background: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+  min-height: 100vh;
+  font-family: "Roboto Mono", monospace;
+}
+header {
+  display: flex;
+  justify-content: center;
+  margin: 40px;
+}
+h1 {
+  font-size: 4em;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .tile {
   width: 100px;
   height: 100px;
-  border: 1px white solid;
+  border: 1px black solid;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +39,92 @@
   grid-gap: 2px;
   justify-items: center;
 }
+.buttons {
+  margin: 30px;
+}
+.gameinfo {
+  padding: 20px;
+  border: 2px solid black;
+  font-size: 2em;
+}
 
 form {
+  position: fixed;
+  top: 100%;
+  left: 100%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 1;
+  border: 1px black solid;
+  padding: 20px;
+  background: linear-gradient(
+    109.6deg,
+    rgb(255, 221, 225) 11.2%,
+    rgb(255, 255, 255) 92.2%
+  );
+  /* width: 1000px; */
+  max-width: 80%;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  transition: 300ms ease-in-out;
+
+  /* height: 200px; */
+}
+form.active {
+  transform: translate(-50%, -50%) scale(1);
+  top: 50%;
+  left: 50%;
+}
+.mainform {
   display: flex;
+}
+
+form div label {
+  display: block;
+  text-align: center;
+  margin: 5px;
+}
+
+.title-radial {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.radial-cont {
+  display: flex;
+  justify-content: space-around;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  justify-content: ;
+}
+
+.form-buttons {
+  margin: 20px 0 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-buttons button {
+  margin: 0 5px;
+  width: 100px;
+}
+
+#grayout {
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 500ms ease-in-out;
+  pointer-events: none;
+}
+
+/* Class to make it visible */
+#grayout.active {
+  opacity: 1;
+  pointer-events: all;
 }

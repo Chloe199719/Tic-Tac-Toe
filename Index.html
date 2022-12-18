@@ -5,36 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Rubik+80s+Fade&display=swap"
+      rel="stylesheet"
+    />
     <title>Tic, Tac , Toe</title>
   </head>
   <body>
-    <div class="gameBoard">
-      <div class="tile" data-tile="0"></div>
-      <div class="tile" data-tile="1"></div>
-      <div class="tile" data-tile="2"></div>
-      <div class="tile" data-tile="3"></div>
-      <div class="tile" data-tile="4"></div>
-      <div class="tile" data-tile="5"></div>
-      <div class="tile" data-tile="6"></div>
-      <div class="tile" data-tile="7"></div>
-      <div class="tile" data-tile="8"></div>
-    </div>
-    <button id="reset">Reset</button>
-    <form>
-      <div>
-        <label for="player1name">name</label>
-        <input type="text" id="p1name" />
-        <div>Who goes first</div>
-        <label for="first">Player 1</label>
-        <input type="radio" name="first" id="player1" />
-        <label for="first">Player 2</label>
-        <input type="radio" name="first" id="player2" />
+    <header>
+      <h1>Play Tic Tac Toe</h1>
+    </header>
+    <main>
+      <div class="gameBoard">
+        <div class="tile" data-tile="0"></div>
+        <div class="tile" data-tile="1"></div>
+        <div class="tile" data-tile="2"></div>
+        <div class="tile" data-tile="3"></div>
+        <div class="tile" data-tile="4"></div>
+        <div class="tile" data-tile="5"></div>
+        <div class="tile" data-tile="6"></div>
+        <div class="tile" data-tile="7"></div>
+        <div class="tile" data-tile="8"></div>
       </div>
-      <div>
-        <label for="player2name">name</label>
-        <input type="text" id="p2name" />
+      <div class="buttons">
+        <button id="reset">Reset</button>
+        <button id="newgame">New Game</button>
       </div>
-    </form>
+
+      <div class="gameinfo">Chloe with X against Roly with O</div>
+      <div class="won">Chloe as X won This Round</div>
+      <form id="register">
+        <div class="mainform">
+          <div>
+            <label for="player1name">Player 1 name</label>
+            <input type="text" id="p1name" required />
+          </div>
+          <div>
+            <label for="player2name">Player 2 name</label>
+            <input type="text" id="p2name" required />
+          </div>
+        </div>
+        <div class="title-radial"><p>Who goes First ?</p></div>
+        <div class="radial-cont">
+          <div class="option">
+            <label for="first">Player 1</label>
+            <input type="radio" name="first" id="player1" required />
+          </div>
+          <div class="option">
+            <label for="first">Player 2</label>
+            <input type="radio" name="first" id="player2" required />
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button type="submit" form="register" id="strgame">
+            Start Game!
+          </button>
+          <button type="button" id="close">Exit</button>
+        </div>
+      </form>
+    </main>
+    <div id="grayout"></div>
     <script src="script.js"></script>
   </body>
 </html>

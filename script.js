@@ -1,23 +1,98 @@
 const gameBoard = (() => {
   const Board = ["", "", "", "", "", "", "", "", ""];
+  let isThereaWiner = 0;
   const Player = (name, choice, turn) => {
     const getName = () => name;
     const getChoice = () => choice;
     let itsTurn = turn;
     return { getName, getChoice, itsTurn };
   };
-  const player1 = Player("chloe", "X", true);
-  const player2 = Player("Roly", "O", false);
+  const setupGame = (e) => {
+    e.preventDefault();
+    if (
+      displayControler.inputp1Name.value === "" &&
+      displayControler.inputp2Name === ""
+    ) {
+      return;
+    } else if (
+      displayControler.playerChoice1.checked === false &&
+      displayControler.playerChoice2.checked === false
+    ) {
+      return;
+    } else {
+      let p1;
+      let p2;
+      let turn;
+      if (displayControler.playerChoice1.checked) {
+        p1 = "X";
+        p2 = "O";
+        turn = true;
+      } else if (displayControler.playerChoice2.checked) {
+        p2 = "X";
+        p1 = "O";
+        turn = false;
+      }
+      gameBoard.player1 = gameBoard.Player(
+        displayControler.inputp1Name.value,
+        p1,
+        turn
+      );
+      gameBoard.player2 = gameBoard.Player(
+        displayControler.inputp2Name.value,
+        p2,
+        !turn
+      );
+      displayControler.init();
+      displayControler.clearForm();
+      displayControler.playersInfo();
+      displayControler.closeForm();
+    }
+
+    // Player("chloe", "X", true);Player("Roly", "O", false);
+  };
+  let player1;
+  let player2;
   const reset = () => {
     gameBoard.Board = ["", "", "", "", "", "", "", "", ""];
     displayControler.rendergame();
+    displayControler.woncont.textContent = "";
+    displayControler.isThereaWiner = 0;
   };
-  return { Board, Player, player1, player2, reset };
+  const newgame = () => {
+    gameBoard.reset();
+    const temp = document.querySelectorAll(`.players`);
+    temp.forEach((a) => {
+      a.remove();
+    });
+    displayControler.openForm();
+  };
+  return {
+    Board,
+    Player,
+    player1,
+    player2,
+    reset,
+    setupGame,
+    newgame,
+    isThereaWiner,
+  };
 })();
 
 const displayControler = (() => {
   const tiles = document.querySelectorAll(`.tile`);
   const resetBtn = document.querySelector(`#reset`);
+  const inputp1Name = document.querySelector("#p1name");
+  const inputp2Name = document.querySelector(`#p2name`);
+  const playerChoice1 = document.querySelector(`#player1`);
+  const playerChoice2 = document.querySelector(`#player2`);
+  const startGameBtn = document.querySelector(`#strgame`);
+  const gameinfo = document.querySelector(`.gameinfo`);
+  const woncont = document.querySelector(`.won`);
+  const newgamebtn = document.querySelector(`#newgame`);
+  const grayout = document.querySelector(`#grayout`);
+  const closeBtn = document.querySelector(`#close`);
+  const newgameForm = document.querySelector(`#register`);
+
   const rendergame = function () {
     tiles.forEach((a) => {
       a.textContent = gameBoard.Board[a.dataset.tile];
@@ -29,24 +104,93 @@ const displayControler = (() => {
     });
     displayControler.resetBtn.addEventListener("click", gameBoard.reset);
   };
-  return { tiles, rendergame, init, resetBtn };
+
+  const initInit = () => {
+    displayControler.startGameBtn.addEventListener(
+      `click`,
+      gameBoard.setupGame
+    );
+    displayControler.newgamebtn.addEventListener(`click`, gameBoard.newgame);
+    displayControler.closeBtn.addEventListener("click", closeForm);
+    displayControler.grayout.addEventListener(`click`, closeForm);
+  };
+  const clearForm = () => {
+    displayControler.inputp1Name.value = "";
+    displayControler.inputp2Name.value = "";
+    displayControler.playerChoice1.checked = false;
+    displayControler.playerChoice2.checked = false;
+  };
+  const playersInfo = () => {
+    const div1 = document.createElement(`div`);
+    const div2 = document.createElement(`div`);
+    div1.className = "players";
+    div2.className = "players";
+    div1.textContent = `${gameBoard.player1.getName()} ${gameBoard.player1.getChoice()} against `;
+    div2.textContent = `${gameBoard.player2.getName()} ${gameBoard.player2.getChoice()} `;
+    displayControler.gameinfo.appendChild(div1);
+    displayControler.gameinfo.appendChild(div2);
+  };
+  const displayWiner = (e) => {
+    if (e === "Draw") {
+      woncont.textContent = `Its a Draw Neither Player Won`;
+    }
+    if (e === gameBoard.player1.getChoice()) {
+      woncont.textContent = `${gameBoard.player1.getName()} ${e} as won this round`;
+    } else if (e === gameBoard.player2.getChoice()) {
+      woncont.textContent = `${gameBoard.player2.getName()} ${e} as won this round`;
+    }
+  };
+  const openForm = () => {
+    displayControler.newgameForm.classList.add("active");
+    displayControler.grayout.classList.add(`active`);
+  };
+  const closeForm = () => {
+    displayControler.newgameForm.classList.remove("active");
+    displayControler.grayout.classList.remove(`active`);
+    displayControler.clearForm();
+  };
+  return {
+    tiles,
+    rendergame,
+    init,
+    resetBtn,
+    inputp1Name,
+    inputp2Name,
+    playerChoice1,
+    playerChoice2,
+    startGameBtn,
+    initInit,
+    clearForm,
+    gameinfo,
+    playersInfo,
+    woncont,
+    displayWiner,
+    newgamebtn,
+    grayout,
+    closeBtn,
+    newgameForm,
+    openForm,
+    closeForm,
+  };
 })();
 
 const gameLogic = (() => {
   const round = (e) => {
-    if (gameBoard.player1.itsTurn) {
-      if (gameBoard.Board[e.target.dataset.tile] !== "") return;
-      gameBoard.Board[e.target.dataset.tile] = gameBoard.player1.getChoice();
-      gameBoard.player1.itsTurn = false;
-      gameBoard.player2.itsTurn = true;
-    } else if (gameBoard.player2.itsTurn) {
-      if (gameBoard.Board[e.target.dataset.tile] !== "") return;
-      gameBoard.Board[e.target.dataset.tile] = gameBoard.player2.getChoice();
-      gameBoard.player2.itsTurn = false;
-      gameBoard.player1.itsTurn = true;
+    if (gameBoard.isThereaWiner === 0) {
+      if (gameBoard.player1.itsTurn) {
+        if (gameBoard.Board[e.target.dataset.tile] !== "") return;
+        gameBoard.Board[e.target.dataset.tile] = gameBoard.player1.getChoice();
+        gameBoard.player1.itsTurn = false;
+        gameBoard.player2.itsTurn = true;
+      } else if (gameBoard.player2.itsTurn) {
+        if (gameBoard.Board[e.target.dataset.tile] !== "") return;
+        gameBoard.Board[e.target.dataset.tile] = gameBoard.player2.getChoice();
+        gameBoard.player2.itsTurn = false;
+        gameBoard.player1.itsTurn = true;
+      }
+      displayControler.rendergame();
+      checkWiner(gameBoard.Board);
     }
-    displayControler.rendergame();
-    checkWiner(gameBoard.Board);
   };
   const convertX = (X) => {
     let temparray = [];
@@ -97,11 +241,14 @@ const gameLogic = (() => {
   };
   const checkWiner = (Board) => {
     if (gameLogic.convertO(Board) === true) {
-      console.log("Circle Wins");
+      displayControler.displayWiner("O");
+      gameBoard.isThereaWiner = 1;
     } else if (gameLogic.convertX(Board) === true) {
-      console.log(`Cross Wins`);
+      displayControler.displayWiner("X");
+      gameBoard.isThereaWiner = 1;
     } else if (gameLogic.checkDraw(Board) === true) {
-      console.log(`Draw`);
+      displayControler.displayWiner(`Draw`);
+      gameBoard.isThereaWiner = 1;
     }
     return false;
   };
@@ -115,7 +262,7 @@ const gameLogic = (() => {
   return { round, convertX, convertO, wining, win, checkWiner, checkDraw };
 })();
 
-displayControler.init();
+displayControler.initInit();
 
 // [1, 1, 1, 0, 0, 0, 0, 0, 0],
 //   [0, 0, 0, 1, 1, 1, 0, 0, 0],
