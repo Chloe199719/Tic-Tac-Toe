@@ -60,11 +60,13 @@ const gameBoard = (() => {
   };
   const newgame = () => {
     gameBoard.reset();
+    gameBoard.isThereaWiner = 1;
     const temp = document.querySelectorAll(`.players`);
     temp.forEach((a) => {
       a.remove();
     });
     displayControler.openForm();
+    displayControler.gameinfo.classList.remove(`active`);
   };
   return {
     Board,
@@ -130,6 +132,7 @@ const displayControler = (() => {
     div2.textContent = `${gameBoard.player2.getName()} ${gameBoard.player2.getChoice()} `;
     displayControler.gameinfo.appendChild(div1);
     displayControler.gameinfo.appendChild(div2);
+    displayControler.gameinfo.classList.add(`active`);
   };
   const displayWiner = (e) => {
     if (e === "Draw") {
