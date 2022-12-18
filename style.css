@@ -13,3 +13,7 @@
   grid-gap: 2px;
   justify-items: center;
 }
+
+form {
+  display: flex;
+}

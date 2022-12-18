@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Tic, Tac , Toe</title>
+  </head>
+  <body>
     <div class="gameBoard">
       <div class="tile" data-tile="0"></div>
       <div class="tile" data-tile="1"></div>
@@ -18,8 +20,21 @@
       <div class="tile" data-tile="8"></div>
     </div>
     <button id="reset">Reset</button>
-  </head>
-  <body>
+    <form>
+      <div>
+        <label for="player1name">name</label>
+        <input type="text" id="p1name" />
+        <div>Who goes first</div>
+        <label for="first">Player 1</label>
+        <input type="radio" name="first" id="player1" />
+        <label for="first">Player 2</label>
+        <input type="radio" name="first" id="player2" />
+      </div>
+      <div>
+        <label for="player2name">name</label>
+        <input type="text" id="p2name" />
+      </div>
+    </form>
     <script src="script.js"></script>
   </body>
 </html>
