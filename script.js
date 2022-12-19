@@ -1,15 +1,17 @@
 // This ObJect Handles Board Actions
 
 const gameBoard = (() => {
-  const Board = ["", "", "", "", "", "", "", "", ""];
-  let isThereaWiner = 0;
+  const Board = ["", "", "", "", "", "", "", "", ""]; //  Array  that renders the board
+  let isThereaWiner = 0; // Gate to for board inputs  0 can use it / 1 board is locked
+
+  // Player Function Creator
   const Player = (name, choice, turn) => {
     const getName = () => name;
     const getChoice = () => choice;
     let itsTurn = turn;
     return { getName, getChoice, itsTurn };
   };
-  //   Checks is new game form input corretly and starts game
+  //   Checks is new game form input corretly and Adds the players and starts the game
   const setupGame = (e) => {
     e.preventDefault();
     if (
@@ -56,12 +58,15 @@ const gameBoard = (() => {
   };
   let player1;
   let player2;
+
+  // Resets to new Round
   const reset = () => {
     gameBoard.Board = ["", "", "", "", "", "", "", "", ""];
     displayControler.rendergame();
     displayControler.woncont.textContent = "";
     gameBoard.isThereaWiner = 0;
   };
+  // Resets also Resets Players
   const newgame = () => {
     gameBoard.reset();
     gameBoard.isThereaWiner = 1;
@@ -85,6 +90,7 @@ const gameBoard = (() => {
 })();
 
 const displayControler = (() => {
+  // Dom calls
   const tiles = document.querySelectorAll(`.tile`);
   const resetBtn = document.querySelector(`#reset`);
   const inputp1Name = document.querySelector("#p1name");
@@ -101,11 +107,13 @@ const displayControler = (() => {
   const closeWinerbtn = document.querySelector(`#closewiner`);
   const winbox = document.querySelector(`.won-box`);
 
+  // Renders the Board on the Browser
   const rendergame = function () {
     tiles.forEach((a) => {
       a.textContent = gameBoard.Board[a.dataset.tile];
     });
   };
+  // 2nd init idk why there 2 -.-
   const init = () => {
     tiles.forEach((a) => {
       a.addEventListener("click", gameLogic.round);
@@ -113,6 +121,7 @@ const displayControler = (() => {
     displayControler.resetBtn.addEventListener("click", gameBoard.reset);
   };
 
+  // Main init that gets called at Page Load
   const initInit = () => {
     displayControler.startGameBtn.addEventListener(
       `click`,
@@ -121,12 +130,17 @@ const displayControler = (() => {
     displayControler.newgamebtn.addEventListener(`click`, gameBoard.newgame);
     displayControler.closeBtn.addEventListener("click", closeForm);
   };
+
+  // Clears the form That makes new set of Players
+
   const clearForm = () => {
     displayControler.inputp1Name.value = "";
     displayControler.inputp2Name.value = "";
     displayControler.playerChoice1.checked = false;
     displayControler.playerChoice2.checked = false;
   };
+
+  // Renders name of the players and if they X or O  also  Makes it visible
   const playersInfo = () => {
     const div1 = document.createElement(`div`);
     const div2 = document.createElement(`div`);
@@ -138,6 +152,8 @@ const displayControler = (() => {
     displayControler.gameinfo.appendChild(div2);
     displayControler.gameinfo.classList.add(`active`);
   };
+
+  // Displays Who Won the Round if there a Winner
   const displayWiner = (e) => {
     if (e === "Draw") {
       woncont.textContent = `Its a Draw Neither Player Won`;
@@ -149,22 +165,28 @@ const displayControler = (() => {
     }
     displayControler.openWinner();
   };
+
+  // Opens the Players form
   const openForm = () => {
     displayControler.newgameForm.classList.add("active");
     displayControler.addGrayout();
     displayControler.grayout.addEventListener(`click`, closeForm);
   };
+  // Close the Player Form
   const closeForm = () => {
     displayControler.newgameForm.classList.remove("active");
     displayControler.removeGrayout();
     displayControler.clearForm();
   };
+  //  Adds a Gray out When Popups Apear
   const addGrayout = () => {
     displayControler.grayout.classList.add(`active`);
   };
+  // Remove a Gray out when Popups Disapear
   const removeGrayout = () => {
     displayControler.grayout.classList.remove(`active`);
   };
+  // Shows The Winner on PopOut
   const openWinner = () => {
     displayControler.winbox.classList.add(`active`);
     displayControler.grayout.addEventListener(
@@ -177,7 +199,7 @@ const displayControler = (() => {
     );
     displayControler.addGrayout();
   };
-
+  // Hides the winner popout
   const closeWinner = () => {
     displayControler.winbox.classList.remove(`active`);
     displayControler.removeGrayout();
@@ -214,6 +236,7 @@ const displayControler = (() => {
 })();
 
 const gameLogic = (() => {
+  // Checks if there a Winner already and all the game rules are followed
   const round = (e) => {
     if (gameBoard.isThereaWiner === 0) {
       if (gameBoard.player1.itsTurn) {
@@ -231,6 +254,8 @@ const gameLogic = (() => {
       checkWiner(gameBoard.Board);
     }
   };
+
+  //  Converts X to 1 and 0 to compare
   const convertX = (X) => {
     let temparray = [];
     X.forEach((a) => {
@@ -242,6 +267,7 @@ const gameLogic = (() => {
     });
     return gameLogic.win(gameLogic.wining, temparray);
   };
+  //  Converts X to 1 and 0 to compare
   const convertO = (O) => {
     let temparray = [];
     O.forEach((a) => {
@@ -253,6 +279,8 @@ const gameLogic = (() => {
     });
     return gameLogic.win(gameLogic.wining, temparray);
   };
+
+  // Winning key for Both X and O Left to right top to bottom
   const wining = [
     [1, 1, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 1, 1, 0, 0, 0],
@@ -263,6 +291,7 @@ const gameLogic = (() => {
     [1, 0, 0, 0, 1, 0, 0, 0, 1],
     [0, 0, 1, 0, 1, 0, 1, 0, 0],
   ];
+  // Takes the winning Key and output of Convert O or Convert X to check if either won
   const win = (winkey, key) => {
     let result = false;
     winkey.forEach((a) => {
@@ -278,6 +307,9 @@ const gameLogic = (() => {
     });
     return result;
   };
+
+  // Checks the Winner using  Win function and outputs the value to the display also if there a winner stop any inputs on board
+
   const checkWiner = (Board) => {
     if (gameLogic.convertO(Board) === true) {
       displayControler.displayWiner("O");
@@ -291,6 +323,7 @@ const gameLogic = (() => {
     }
     return false;
   };
+  // Checks if there a Draw
   const checkDraw = (Board) => {
     let result = true;
     Board.forEach((a, i) => {
@@ -302,6 +335,15 @@ const gameLogic = (() => {
 })();
 
 displayControler.initInit();
+
+// Footer Year
+const yeartxt = document.querySelector(`#year`);
+const now = new Date();
+const yearNow = now.getFullYear();
+
+yeartxt.textContent = yearNow;
+
+//  First sketch of check Winner Function keept it here cause i was really proud of it
 
 // [1, 1, 1, 0, 0, 0, 0, 0, 0],
 //   [0, 0, 0, 1, 1, 1, 0, 0, 0],
