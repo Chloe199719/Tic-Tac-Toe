@@ -9,6 +9,7 @@ const gameBoard = (() => {
     let itsTurn = turn;
     return { getName, getChoice, itsTurn };
   };
+  //   Checks is new game form input corretly and starts game
   const setupGame = (e) => {
     e.preventDefault();
     if (
