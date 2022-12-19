@@ -1,3 +1,5 @@
+// This ObJect Handles Board Actions
+
 const gameBoard = (() => {
   const Board = ["", "", "", "", "", "", "", "", ""];
   let isThereaWiner = 0;
