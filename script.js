@@ -42,6 +42,7 @@ const gameBoard = (() => {
         p2,
         !turn
       );
+      gameBoard.isThereaWiner = 0;
       displayControler.init();
       displayControler.clearForm();
       displayControler.playersInfo();
